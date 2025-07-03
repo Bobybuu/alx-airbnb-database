@@ -1,4 +1,3 @@
-```markdown
 # 🏡 ALX Airbnb Database Project
 
 This repository contains the complete solution for the **ALX Airbnb Database Module**, which simulates the backend of an Airbnb-like system. The focus of the project is to apply advanced database design techniques, normalization, schema creation, and data seeding using SQL.
@@ -99,6 +98,3 @@ This project is part of the [ALX Africa Software Engineering Program](https://ww
 ## 📎 Acknowledgements
 
 Special thanks to the ALX team and mentors for providing a hands-on, real-world learning experience in backend and database development.
-
----
-```
