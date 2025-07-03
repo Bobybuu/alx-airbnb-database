@@ -1,4 +1,4 @@
-# 🏗️ Airbnb Database - Script 0x01
+# 🏗️ Airbnb Database - Script 0x02
 
 This directory contains the core SQL scripts to define and populate the Airbnb clone database.
 
