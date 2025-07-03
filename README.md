@@ -85,7 +85,7 @@ alx-airbnb-database/
 **Chrispin Odiwuor**  
 ALX Software Engineering Student  
 📧 chrispinodiwuor@gmail.com  
-📱 +254 703 274032
+📱 +254703274032
 
 ---
 
