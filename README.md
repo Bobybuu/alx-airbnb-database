@@ -1,5 +1,3 @@
----
-
 ```markdown
 # 🏡 ALX Airbnb Database Project
 
