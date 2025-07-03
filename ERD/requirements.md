@@ -143,12 +143,13 @@ This file contains the Entity-Relationship Diagram (ERD) based on the Airbnb dat
 
 ## 🖼️ ER Diagram
 
-> ![ERD](./airbnb_erd.drawio.png)
+> ![ERD](\alx-airbnb-database\airbnb_erd.drawio.png)
 
 *Alternative: Link to hosted image*  
 > [View ER Diagram](https://drive.google.com/file/d/1flkCrQvauazm76ckz-KNkvbykhoOJ06v/view?usp=sharing)
 
 ---
+
 
 ## 📌 Notes
 
