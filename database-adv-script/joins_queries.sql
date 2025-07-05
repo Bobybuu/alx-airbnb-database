@@ -19,7 +19,7 @@ FROM bookings
 INNER JOIN users
     ON bookings.user_id = users.user_id;
 
-/*Write a query using aLEFT JOIN 
+/*Write a query using a LEFT JOIN 
 to retrieve all properties and their reviews, 
 including properties that have no reviews.
 */
@@ -36,7 +36,9 @@ SELECT
     reviews.user_id AS reviewer_id
 FROM properties
 LEFT JOIN reviews
-    ON properties.property_id = reviews.property_id;
+    ON properties.property_id = reviews.property_id
+ORDER BY properties.property_id;
+
 
 -- Simulated FULL OUTER JOIN: Users ↔ Bookings
 SELECT 
