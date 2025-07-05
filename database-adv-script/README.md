@@ -144,3 +144,79 @@ alx-airbnb-project-documentation/
 This section was prepared as part of the ALX Software Engineering backend documentation track for the Airbnb Clone project.
 
 ---
+#Task 2
+---
+
+# SQL Subqueries: Correlated and Non-Correlated
+
+## 🎯 Objective
+
+The objective of this exercise is to **learn how to write both correlated and non-correlated subqueries** by solving two practical SQL problems based on a property booking system.
+
+---
+
+## 📝 Tasks
+
+### 1️⃣ Write a query to find all properties where the average rating is greater than 4.0 using a subquery.
+
+#### ✅ SQL Query (Non-Correlated Subquery)
+
+```sql
+SELECT *
+FROM properties
+WHERE property_id IN (
+    SELECT property_id
+    FROM reviews
+    GROUP BY property_id
+    HAVING AVG(rating) > 4.0
+);
+````
+
+#### 💡 Explanation
+
+* This is a **non-correlated subquery** because it runs independently of the outer query.
+* The inner query calculates the average rating for each property and filters those above 4.0.
+* The outer query retrieves full property details for those matching `property_id`s.
+
+---
+
+### 2️⃣ Write a correlated subquery to find users who have made more than 3 bookings.
+
+#### ✅ SQL Query (Correlated Subquery)
+
+```sql
+SELECT *
+FROM users u
+WHERE (
+    SELECT COUNT(*)
+    FROM bookings b
+    WHERE b.user_id = u.user_id
+) > 3;
+```
+
+#### 💡 Explanation
+
+* This is a **correlated subquery** because the inner query references `u.user_id` from the outer query.
+* It counts bookings for each user, and the outer query returns users with more than 3 bookings.
+
+
+---
+
+## 🧠 Learning Outcomes
+
+By completing this task, you will:
+
+* Understand the difference between **correlated** and **non-correlated** subqueries.
+* Learn how subqueries can be used to filter, aggregate, and compare data.
+* Be able to apply subqueries in real-world database scenarios like bookings and reviews.
+
+---
+
+## ✅ Summary Table
+
+| Task | Subquery Type  | Purpose                               |
+| ---- | -------------- | ------------------------------------- |
+| 1    | Non-Correlated | Filter properties by avg rating > 4.0 |
+| 2    | Correlated     | Filter users with > 3 bookings        |
+
+---
