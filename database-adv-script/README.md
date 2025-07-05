@@ -1,222 +1,167 @@
-# 🔗 SQL Join Queries – Airbnb Clone Project
+---
 
-## 🎯 Objective
-This section documents key SQL join queries used to retrieve and analyze relationships between users, bookings, properties, and reviews in the Airbnb Clone backend system. The goal is to demonstrate real-world data retrieval techniques using INNER JOIN, LEFT JOIN, and FULL OUTER JOIN (simulated in MySQL).
+# 🏨 ALX Airbnb Advanced SQL Project
+
+## 📁 Directory: `database-adv-script`
+
+This project is part of the **ALX Software Engineering Program**, focused on mastering advanced SQL techniques in the context of an Airbnb-like platform. It covers complex queries using joins, subqueries, aggregations, performance tuning, indexing, and partitioning.
 
 ---
 
-## 📌 Queries Included
+## ✅ Project Overview
 
-### 1️⃣ INNER JOIN: Bookings and Users
-
-**Query Objective:**  
-Retrieve all bookings along with the details of the users who made them.
-
-```sql
-SELECT 
-    bookings.booking_id,
-    bookings.property_id,
-    bookings.start_date,
-    bookings.end_date,
-    bookings.total_price,
-    bookings.status,
-    bookings.created_at AS booking_created_at,
-    users.user_id,
-    users.first_name,
-    users.last_name,
-    users.email
-FROM bookings
-INNER JOIN users
-    ON bookings.user_id = users.user_id;
-````
-
-**Use Case:**
-This query helps in generating user-specific booking history and is useful for reporting, dashboards, or customer support.
+| Task No. | Topic                            | Objective |
+|----------|----------------------------------|-----------|
+| 0        | Write Complex Queries with Joins | Master SQL joins |
+| 1        | Practice Subqueries              | Use correlated and non-correlated subqueries |
+| 2        | Apply Aggregations and Window Functions | Use aggregate and ranking functions |
+| 3        | Implement Indexes for Optimization | Improve performance using indexes |
+| 4        | Optimize Complex Queries         | Refactor for better query performance |
+| 5        | Partitioning Large Tables        | Optimize queries with table partitioning |
+| 6        | Monitor and Refine Performance   | Use tools to monitor and improve query performance |
 
 ---
 
-### 2️⃣ LEFT JOIN: Properties and Reviews
+## 📘 Task Descriptions & Deliverables
 
-**Query Objective:**
-Retrieve all properties and their associated reviews, including properties that have no reviews.
+### 0. Write Complex Queries with Joins
 
-```sql
-SELECT 
-    properties.property_id,
-    properties.name AS property_name,
-    properties.location,
-    properties.pricepernight,
-    reviews.review_id,
-    reviews.rating,
-    reviews.comment,
-    reviews.created_at AS review_date,
-    reviews.user_id AS reviewer_id
-FROM properties
-LEFT JOIN reviews
-    ON properties.property_id = reviews.property_id;
+**Objective:** Master SQL joins by writing complex queries using `INNER`, `LEFT`, and `FULL OUTER JOIN`.
+
+**Instructions:**
+- Use an `INNER JOIN` to retrieve all bookings with their respective users.
+- Use a `LEFT JOIN` to retrieve all properties and their reviews, including properties with no reviews.
+- Use a `FULL OUTER JOIN` to retrieve all users and all bookings, even unmatched ones.
+
+**File:** `joins_queries.sql`
+
+---
+
+### 1. Practice Subqueries
+
+**Objective:** Write both correlated and non-correlated subqueries.
+
+**Instructions:**
+- Write a query to find all properties where the average rating is greater than 4.0 using a non-correlated subquery.
+- Write a correlated subquery to find users who have made more than 3 bookings.
+
+**File:** `subqueries.sql`
+
+---
+
+### 2. Apply Aggregations and Window Functions
+
+**Objective:** Use aggregation and window functions to analyze booking and property data.
+
+**Instructions:**
+- Use `COUNT` and `GROUP BY` to find total bookings per user.
+- Use `ROW_NUMBER` or `RANK` to rank properties by the number of bookings.
+
+**File:** `aggregations_and_window_functions.sql`
+
+---
+
+### 3. Implement Indexes for Optimization
+
+**Objective:** Improve query performance using indexing.
+
+**Instructions:**
+- Identify frequently used columns in `User`, `Booking`, and `Property` tables.
+- Create indexes using `CREATE INDEX` statements.
+- Measure performance before and after indexing using `EXPLAIN` or `ANALYZE`.
+
+**File:** `database_index.sql` and report in `index_performance.md`
+
+---
+
+### 4. Optimize Complex Queries
+
+**Objective:** Refactor inefficient queries for better performance.
+
+**Instructions:**
+- Write a query to retrieve all bookings with user, property, and payment details.
+- Analyze it with `EXPLAIN`.
+- Refactor to optimize joins or indexing and document the improvements.
+
+**Files:**
+- Initial and optimized query: `perfomance.sql`
+- Performance analysis report: `optimization_report.md`
+
+---
+
+### 5. Partitioning Large Tables
+
+**Objective:** Use table partitioning to optimize large datasets.
+
+**Instructions:**
+- Partition the `Booking` table based on `start_date`.
+- Test and compare query performance.
+- Document improvements.
+
+**Files:**
+- SQL implementation: `partitioning.sql`
+- Report: `partition_performance.md`
+
+---
+
+### 6. Monitor and Refine Database Performance
+
+**Objective:** Monitor queries and refine schema or indexing for optimal performance.
+
+**Instructions:**
+- Use tools like `SHOW PROFILE`, `EXPLAIN ANALYZE` to monitor key queries.
+- Identify bottlenecks.
+- Propose and implement improvements.
+
+**File:** `performance_monitoring.md`
+
+---
+
+## 🗃️ Repository Structure
+
 ```
 
-**Use Case:**
-Useful for displaying all listings on the platform, along with their reviews (if any), to site visitors or admins.
-
----
-
-### 3️⃣ FULL OUTER JOIN (Simulated): Users and Bookings
-
-> MySQL does not support `FULL OUTER JOIN` natively. This query simulates it using a `UNION` of `LEFT JOIN` and `RIGHT JOIN`.
-
-**Query Objective:**
-Retrieve all users and all bookings — including:
-
-* Users with no bookings
-* Bookings not linked to any user
-
-```sql
--- Simulate FULL OUTER JOIN in MySQL
-SELECT 
-    users.user_id,
-    users.first_name,
-    users.last_name,
-    users.email,
-    bookings.booking_id,
-    bookings.property_id,
-    bookings.start_date,
-    bookings.end_date,
-    bookings.total_price,
-    bookings.status
-FROM users
-LEFT JOIN bookings ON users.user_id = bookings.user_id
-
-UNION
-
-SELECT 
-    users.user_id,
-    users.first_name,
-    users.last_name,
-    users.email,
-    bookings.booking_id,
-    bookings.property_id,
-    bookings.start_date,
-    bookings.end_date,
-    bookings.total_price,
-    bookings.status
-FROM bookings
-RIGHT JOIN users ON users.user_id = bookings.user_id;
-```
-
-**Use Case:**
-This query is especially helpful for auditing and data validation — ensuring all users and bookings are accounted for, even if they aren't matched.
-
----
-
-## 📁 Directory Structure
+alx-airbnb-database/
+└── database-adv-script/
+├── joins\_queries.sql
+├── subqueries.sql
+├── aggregations\_and\_window\_functions.sql
+├── database\_index.sql
+├── index\_performance.md
+├── perfomance.sql
+├── optimization\_report.md
+├── partitioning.sql
+├── partition\_performance.md
+└── performance\_monitoring.md
 
 ```
-alx-airbnb-project-documentation/
-├── joins-and-queries/
-│   ├── inner-join-bookings-users.sql
-│   ├── left-join-properties-reviews.sql
-│   ├── full-outer-join-users-bookings.sql
-│   └── README.md
-```
 
 ---
 
-## 🛠️ Tools & Technologies
+## 🧠 Skills Demonstrated
 
-* SQL (MySQL 8+)
-* Joins: INNER, LEFT, and simulated FULL OUTER
-* UNION for result merging
-* Real Airbnb-style relational schema
-
----
-
-## ✅ Benefits of Using Joins
-
-* Combine related data from multiple tables efficiently
-* Enable powerful reporting and analysis
-* Improve backend functionality (e.g., dashboards, filters)
+- SQL Joins (INNER, LEFT, FULL OUTER)
+- Subqueries (correlated & non-correlated)
+- Aggregation & Window Functions
+- Indexing & Query Optimization
+- Table Partitioning
+- Performance Monitoring & Refactoring
 
 ---
 
-## 👨‍💻 Author
+## 🧪 Tools & Commands Used
 
-This section was prepared as part of the ALX Software Engineering backend documentation track for the Airbnb Clone project.
-
----
-#Task 2
----
-
-# SQL Subqueries: Correlated and Non-Correlated
-
-## 🎯 Objective
-
-The objective of this exercise is to **learn how to write both correlated and non-correlated subqueries** by solving two practical SQL problems based on a property booking system.
+- SQL (MySQL/PostgreSQL)
+- `EXPLAIN`, `ANALYZE`, `SHOW PROFILE`
+- `CREATE INDEX`, `PARTITION BY`
+- `ROW_NUMBER()`, `RANK()`, `COUNT()`, `GROUP BY`
 
 ---
 
-## 📝 Tasks
+## 📍 Author
 
-### 1️⃣ Write a query to find all properties where the average rating is greater than 4.0 using a subquery.
-
-#### ✅ SQL Query (Non-Correlated Subquery)
-
-```sql
-SELECT *
-FROM properties
-WHERE property_id IN (
-    SELECT property_id
-    FROM reviews
-    GROUP BY property_id
-    HAVING AVG(rating) > 4.0
-);
-````
-
-#### 💡 Explanation
-
-* This is a **non-correlated subquery** because it runs independently of the outer query.
-* The inner query calculates the average rating for each property and filters those above 4.0.
-* The outer query retrieves full property details for those matching `property_id`s.
-
----
-
-### 2️⃣ Write a correlated subquery to find users who have made more than 3 bookings.
-
-#### ✅ SQL Query (Correlated Subquery)
-
-```sql
-SELECT *
-FROM users u
-WHERE (
-    SELECT COUNT(*)
-    FROM bookings b
-    WHERE b.user_id = u.user_id
-) > 3;
-```
-
-#### 💡 Explanation
-
-* This is a **correlated subquery** because the inner query references `u.user_id` from the outer query.
-* It counts bookings for each user, and the outer query returns users with more than 3 bookings.
-
-
----
-
-## 🧠 Learning Outcomes
-
-By completing this task, you will:
-
-* Understand the difference between **correlated** and **non-correlated** subqueries.
-* Learn how subqueries can be used to filter, aggregate, and compare data.
-* Be able to apply subqueries in real-world database scenarios like bookings and reviews.
-
----
-
-## ✅ Summary Table
-
-| Task | Subquery Type  | Purpose                               |
-| ---- | -------------- | ------------------------------------- |
-| 1    | Non-Correlated | Filter properties by avg rating > 4.0 |
-| 2    | Correlated     | Filter users with > 3 bookings        |
+**Chrispin Odiwuor** – ALX Software Engineering Student  
+📚 Project: `alx-airbnb-database`  
+🎯 Goal: Build performant, scalable SQL database systems
 
 ---
