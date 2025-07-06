@@ -1,34 +1,44 @@
--- Step 1: Recreate the booking table with partitioning enabled
--- ⚠️ Note: Partitioned tables must not have foreign keys in MySQL
+-- Drop the original bookings table if needed (BE CAREFUL in production)
+-- DROP TABLE IF EXISTS bookings;
 
--- First, create a copy of booking without foreign keys and with partitioning
-CREATE TABLE booking_partitioned (
-    booking_id CHAR(36) NOT NULL,
-    property_id CHAR(36) NOT NULL,
-    user_id CHAR(36) NOT NULL,
+-- 1. Create a new partitioned bookings table (Range Partitioning by year of start_date)
+
+CREATE TABLE bookings (
+    booking_id UUID PRIMARY KEY,
+    property_id UUID NOT NULL,
+    user_id UUID NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    total_price DECIMAL(10,2) NOT NULL,
+    total_price DECIMAL NOT NULL,
     status ENUM('pending', 'confirmed', 'canceled') NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (booking_id, start_date)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
-PARTITION BY RANGE (YEAR(start_date)) (
-    PARTITION p2023 VALUES LESS THAN (2024),
-    PARTITION p2024 VALUES LESS THAN (2025),
-    PARTITION p2025 VALUES LESS THAN (2026),
-    PARTITION pmax VALUES LESS THAN MAXVALUE
-);
+PARTITION BY RANGE (EXTRACT(YEAR FROM start_date));
 
--- Step 2: Copy data from original booking table into the partitioned version
-INSERT INTO booking_partitioned
-SELECT * FROM booking;
+-- 2. Create partitions for each year
 
--- (Optional) Swap tables if everything works
--- RENAME TABLE booking TO booking_backup, booking_partitioned TO booking;
+CREATE TABLE bookings_2023 PARTITION OF bookings
+    FOR VALUES FROM (2023) TO (2024);
 
--- Step 3: Test partition-aware query
-EXPLAIN
+CREATE TABLE bookings_2024 PARTITION OF bookings
+    FOR VALUES FROM (2024) TO (2025);
+
+CREATE TABLE bookings_2025 PARTITION OF bookings
+    FOR VALUES FROM (2025) TO (2026);
+
+-- 3. Optional: Add indexes on commonly queried columns in each partition
+
+CREATE INDEX idx_booking_user_2023 ON bookings_2023(user_id);
+CREATE INDEX idx_booking_user_2024 ON bookings_2024(user_id);
+CREATE INDEX idx_booking_user_2025 ON bookings_2025(user_id);
+
+-- 4. Sample query to test performance on partitioned table
+
+EXPLAIN ANALYZE
+SELECT *
+FROM bookings
+WHERE start_date BETWEEN '2024-06-01' AND '2024-07-01';
+
 SELECT *
 FROM booking_partitioned
 WHERE start_date BETWEEN '2024-01-01' AND '2024-06-30';
