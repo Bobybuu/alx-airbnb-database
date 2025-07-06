@@ -1,4 +1,4 @@
--- Initial query: Retrieve all bookings with user, property, and payment details
+-- Initial query: Retrieve filtered bookings with user, property, and payment details
 SELECT 
   booking.booking_id,
   booking.start_date,
@@ -24,9 +24,13 @@ SELECT
 FROM booking
 JOIN "user" ON booking.user_id = "user".user_id
 JOIN property ON booking.property_id = property.property_id
-LEFT JOIN payment ON booking.booking_id = payment.booking_id;
+LEFT JOIN payment ON booking.booking_id = payment.booking_id
 
--- Performance analysis
+-- ✅ Required filters
+WHERE booking.status = 'confirmed'
+  AND property.location = 'Nairobi';
+
+-- Performance analysis using EXPLAIN ANALYZE
 EXPLAIN ANALYZE
 SELECT 
   booking.booking_id,
@@ -53,4 +57,9 @@ SELECT
 FROM booking
 JOIN "user" ON booking.user_id = "user".user_id
 JOIN property ON booking.property_id = property.property_id
-LEFT JOIN payment ON booking.booking_id = payment.booking_id;
+LEFT JOIN payment ON booking.booking_id = payment.booking_id
+
+-- ✅ Same filter again for EXPLAIN
+WHERE booking.status = 'confirmed'
+  AND property.location = 'Nairobi';
+
